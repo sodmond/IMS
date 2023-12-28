@@ -1,13 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Dealclinchers Realtors Limited</title>
+
+        <link href="{{ asset('/img/logo.png') }}" rel="icon" type="image/png">
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <link href="{{asset('/dashboard/css/sb-admin-2.min.css')}}" rel="stylesheet">
+        <link href="{{asset('/dashboard/css/custom.css')}}" rel="stylesheet">
 
         <!-- Styles -->
         <style>
@@ -45,7 +53,8 @@
             }
 
             .title {
-                font-size: 84px;
+                font-size: 44px;
+                font-weight: 500;
             }
 
             .links > a {
@@ -63,35 +72,18 @@
             }
         </style>
     </head>
-    <body>
+    <body class="bg-gradient-light sidebar-toggled">
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
             <div class="content">
+                <a href="{{url('/')}}"><img src="{{ asset('img/logo.png') }}" style="width:150px;"></a>
                 <div class="title m-b-md">
-                    Laravel
+                    Deal Clinchers Network Portal
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div>
+                    <a href="{{ url('/sign-up') }}"><button type="button" class="btn btn-info">Sign Up</button></a>
+                    &nbsp;
+                    <a href="{{ url('/home') }}"><button type="button" class="btn btn-info">Login</button></a>
                 </div>
             </div>
         </div>
