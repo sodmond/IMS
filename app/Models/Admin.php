@@ -6,6 +6,7 @@ use App\Notifications\AdminResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class Admin extends Authenticatable
 {
@@ -37,5 +38,20 @@ class Admin extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new AdminResetPassword($token));
+    }
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function getRoleTitle($id)
+    {
+        $role = DB::table('admin_roles')->where('id', $id)->first();
+        return $role->title;
     }
 }

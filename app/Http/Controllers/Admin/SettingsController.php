@@ -27,25 +27,29 @@ class SettingsController extends Controller
     {
         $adminRoles = DB::table('admin_roles')->get();
         $admins = Admin::all();
-        $settings = DB::table('settings')->first();
-        return view('backend.settings', compact('adminRoles', 'admins', 'settings'));
+        #$settings = DB::table('settings')->first();
+        return view('admin.settings', compact('adminRoles', 'admins'));
     }
 
-    public function updateFees(Request $request)
+    public function newProductCat(Request $request)
     {
         $this->validate($request, [
-            'broker_fee' => ['required', 'numeric'],
-            'agent_fee' => ['required', 'numeric'],
+            'title' => ['required', 'max:255'],
+            'description' => ['nullable', 'max:500'],
         ]);
         DB::beginTransaction();
         try {
-            DB::table('settings')->update($request->except('_token'));
+            DB::table('product_categories')->insert(
+                array_merge($request->except('_token'), [
+                    'created_at' => now()
+                ])
+            );
             DB::commit();
             return back()->with('success', 'Fees has been updated.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::info('Update Fees: ' . $e->getMessage());
-            return back()->withErrors(['update_err' => 'Error updating fees, pls try again.']);
+            Log::info('New Product Categories: ' . $e->getMessage());
+            return back()->withErrors(['update_err' => 'Error adding new product categories, pls try again.']);
         }
     }
 
@@ -53,6 +57,10 @@ class SettingsController extends Controller
     {
         if (auth('admin')->user()->role != 1) {
             return redirect()->route('backend.settings');
+        }
+        if (! isset($request->_token)) {
+            $roles = DB::table('admin_roles')->get();
+            return view('admin.auth.register', compact('roles'));
         }
         $this->validate($request, [
             'firstname' => ['required', 'max:255'],
@@ -72,6 +80,22 @@ class SettingsController extends Controller
         return back()->with('success', 'New administrator has been added.');
     }
 
+    public function suspendAdmin($id)
+    {
+        $admin = User::find($id);
+        if ((Auth::id() != 1 && $admin->role != 3) || (Auth::id() == $admin->id)) {
+            return redirect()->back();
+        }
+        if ($admin->status == true) {
+            $admin->status = false;
+            $admin->save();
+            return back()->with('success', 'Admin member has been suspended');
+        }
+        $admin->status = true;
+        $admin->save();
+        return back()->with('success', 'Suspension has been lifted for the specified admin member');
+    }
+
     public function deleteAdmin($id)
     {
         if ($id == 1 || $id == auth('admin')->id() || auth('admin')->user()->role != 1) {
@@ -80,60 +104,5 @@ class SettingsController extends Controller
         $admin = Admin::find($id);
         $admin->delete();
         return back()->with('success', 'Administrator has been deleted');
-    }
-
-    public function accessCodes() : View 
-    {
-        $accessCodes = AccessCode::orderByDesc('created_at')->paginate(10);
-        return view('backend.access_codes', compact('accessCodes'));
-    }
-
-    public function newAccessCodes(Request $request) 
-    {
-        if (! isset($request->_token)) {
-            return view('backend.access_code_new');
-        }
-        $this->validate($request, [
-            'user_id' => ['required', 'integer'],
-            'amount' => ['required', 'numeric'],
-        ]);
-        $user = User::find($request->user_id);
-        DB::beginTransaction();
-        try {
-            $payment = new Payment();
-            $payment->user_id = $request->user_id;
-            $payment->amount = $request->amount;
-            $payment->reference = 'TRS_'.Str::random(10);
-            $payment->memo = 'Manual Payment';
-            $payment->save();
-            $accessCode = new AccessCode();
-            $accessCode->user_id = $request->user_id;
-            $accessCode->code = strtoupper(Str::random(6) .'-'. rand(10000, 999999) .'-'. Str::random(6));
-            $accessCode->payment_id = $payment->id;
-            $accessCode->save();
-            DB::commit();
-            Mail::to($user->email)->queue(new SendAccessCode($accessCode->code));
-            return back()->with('success', 'Access code has been generated and sent to assigned user.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::info('New Access Code' . $e->getMessage());
-            return back()->withErrors(['err_msg' => 'Unable to generate access code, pls try again.']);
-        }
-    }
-
-    public function accessCodeUpdate($id, $type)
-    {
-        $accessCode = AccessCode::find($id);
-        if ($accessCode->status == 'unused' && $type == 'disable') {
-            $accessCode->status = 'disabled';
-            $accessCode->save();
-            return back()->with('success', 'Selected Access Code has been disabled.');
-        }
-        if ($accessCode->status == 'disabled' && $type == 'enable') {
-            $accessCode->status = 'unused';
-            $accessCode->save();
-            return back()->with('success', 'Selected Access Code has been enabled.');
-        }
-        return back()->withErrors(['update_err' => 'Problem encountered, pls try again or contact webmaster if issue persist']);
     }
 }

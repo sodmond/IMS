@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRequest;
@@ -14,7 +14,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('backend.profile');
+        return view('admin.profile');
     }
 
     public function update(ProfileRequest $request)
@@ -26,7 +26,7 @@ class ProfileController extends Controller
     public function password(PasswordRequest $request)
     {
         auth('admin')->user()->update(['password' => Hash::make($request->get('password'))]);
-        Mail::to(auth('admin')->user()->email)->send(new SendPasswordChange(auth('admin')->user()->firstname));
+        #Mail::to(auth('admin')->user()->email)->send(new SendPasswordChange(auth('admin')->user()->firstname));
         return back()->with('success', 'Password successfully updated.');
     }
 }

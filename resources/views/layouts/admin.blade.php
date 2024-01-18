@@ -11,21 +11,22 @@
 
     <title>{{ $title }} - {{ config('app.name') }}</title>
 
-    <link href="{{ asset('/img/logo2.png') }}" rel="icon" type="image/png">
+    <link href="{{ asset('images/favicon.png') }}" rel="icon" type="image/png">
 
     <!-- Custom fonts for this template-->
-    <link href="{{asset('/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('/backend/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     
     <!-- Custom styles for this template-->
-    <link href="{{asset('/css/sb-admin-2.min.css')}}" rel="stylesheet">
-    <link href="{{asset('/css/custom.css')}}" rel="stylesheet">
+    <link href="{{asset('/backend/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('/backend/css/custom.css')}}" rel="stylesheet">
 
 </head>
 
+@auth
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -37,7 +38,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.home') }}">
                 <div class="sidebar-brand-icon">
-                    <img src="{{ asset('/img/logo.png') }}" alt="{{config('app.name')}}" width="60">
+                    <img src="{{ asset('images/logo.png') }}" alt="{{config('app.name')}}" width="60">
                 </div>
                 <div class="sidebar-brand-text mx-3">
                     Admin
@@ -59,14 +60,14 @@
 
             <!-- Nav Item - Products -->
             <li class="nav-item {{ ($activePage == 'products') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.products') }}">
+                <a class="nav-link" href="{{ route('admin.products', ['filter' => 'all']) }}">
                     <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Products</span></a>
             </li>
             
             <!-- Nav Item - Users -->
             <li class="nav-item {{ ($activePage == 'users') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.users') }}">
+                <a class="nav-link" href="{{ route('admin.users', ['filter' => 'all']) }}">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Customers</span></a>
             </li>
@@ -93,7 +94,7 @@
             </li>
 
             <!-- Nav Item - All Settings -->
-            <li class="nav-item">
+            <li class="nav-item {{ ($activePage == 'settings') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.settings') }}">
                     <i class="fas fa-fw fa-cogs"></i>
                     <span>Settings</span></a>
@@ -149,8 +150,8 @@
                     <form action="{{ url('/search') }}" method="get"
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search referral list by email, referral code or lastname"
-                                name="searchVal" aria-label="Search" aria-describedby="basic-addon2" required>
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for customer by email, firstname or lastname"
+                                name="search" aria-label="Search" aria-describedby="basic-addon2" required>
                             <div class="input-group-append">
                                 <button class="btn btn-info" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
@@ -241,13 +242,39 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-info" href="{{ route('logout') }}" onclick="event.preventDefault(); 
+                    <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); 
                                 document.getElementById('logout-form').submit();">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{asset('/backend/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('/backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{asset('/backend/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{asset('/backend/js/sb-admin-2.min.js')}}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{asset('/backend/vendor/chart.js/Chart.min.js')}}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{asset('/backend/js/demo/chart-area-demo.js')}}"></script>
+    <script src="{{asset('/backend/js/demo/chart-pie-demo.js')}}"></script>
+    <script src="{{asset('/backend/js/custom.js')}}"></script>
+
+</body>
+@endauth
+
+@guest
+<body class="bg-gradient-light sidebar-toggled">
+
+    @yield('content')
+    
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -258,14 +285,8 @@
     <!-- Custom scripts for all pages-->
     <script src="{{asset('/js/sb-admin-2.min.js')}}"></script>
 
-    <!-- Page level plugins -->
-    <script src="{{asset('/vendor/chart.js/Chart.min.js')}}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{asset('/js/demo/chart-area-demo.js')}}"></script>
-    <script src="{{asset('/js/demo/chart-pie-demo.js')}}"></script>
-    <script src="{{asset('/js/custom.js')}}"></script>
-
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
-
+@endguest
 </html>

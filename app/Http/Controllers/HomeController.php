@@ -2,18 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -21,6 +13,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $products = Product::orderByDesc('created_at')->take(10)->get();
+        return view('home', compact('products'));
+    }
+
+    public function about()
+    {
+        return view('about');
+    }
+
+    public function contact()
+    {
+        return view('contact');
+    }
+
+    public function faq()
+    {
+        return view('faq');
     }
 }

@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title')
-    Admin - {{ config('app.name' )}}
-@endsection
+@extends('layouts.admin', ['title' => 'Login'])
 
 @section('content')
 <div class="container">
@@ -12,12 +8,12 @@
 
                 <div class="card-body p-0">
                     <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block" style="background: url('https://source.unsplash.com/XbwHrt87mQ0/600x800'); 
+                        <div class="col-lg-6 d-none d-lg-block" style="background: url('https://source.unsplash.com/LcMtQlJM0jk/600x800'); 
                             background-position:center; background-size: cover;"></div>
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <a href="{{url('/')}}"><img src="{{ asset('img/logo.png') }}" style="width:120px;"></a>
+                                    <a href="{{url('/')}}"><img src="{{ asset('images/logo.png') }}" style="width:180px;"></a>
                                     <p>&nbsp;</p>
                                     <h1 class="h4 text-gray-900 mb-4">Admin Login</h1>
                                 </div>
@@ -57,9 +53,6 @@
                                         <a class="small" href="{{ route('password.request') }}">Forgot Password?</a>
                                     </div>
                                 @endif
-                                <div class="text-center">
-                                    <a class="small" href="{{url('/sign-up')}}">Don't have an account? Register Now!</a>
-                                </div>
                             </div>
                         </div>
                     </div>

@@ -42,4 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
+    public static function getUserFullName($user_id)
+    {
+        $user = self::find($user_id);
+        return ucwords($user->firstname . ' ' . $user->lastname);
+    }
 }

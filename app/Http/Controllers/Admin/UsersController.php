@@ -11,41 +11,28 @@ use Illuminate\View\View;
 
 class UsersController extends Controller
 {
-    public function index() {
-        $users = User::paginate(15);
-        return view('backend.users', compact('users'));
+    public function index($filter) {
+        if ($filter == 'all') {
+            $users = User::orderByDesc('created_at')->paginate(15);
+            return view('admin.users', compact('users'));
+        }
+        $users = User::where('email', $filter)->paginate(15);
+        return view('admin.users', compact('users'));
     }
 
-    public function view($id) {
+    public function get($id) {
         $user = User::find($id);
         if ($user) {
-            $accessCodes = AccessCode::where('user_id', $user->id)->orderByDesc('created_at')->take(10)->get();
             $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->paginate(10);
-            return view('backend.user', compact('user', 'orders', 'accessCodes'));
+            return view('admin.user', compact('user', 'orders'));
         }
         return redirect()->route('admin.home');
-    }
-    
-    public function search() {
-        if (! isset($_GET['search'])) {
-            redirect()->route('admin.users');
-        }
-        $val = $_GET['search'];
-        $users = User::where('email', 'LIKE', "%$val%")->take(10)->paginate(10);
-        return view('backend.users', compact('users'));
     }
 
     public function orders($id)
     {
         $user = User::find($id);
         $orders = Order::where('user_id', $id)->orderBydesc('created_at')->paginate(15);
-        return view('backend.orders', compact('user', 'orders'));
-    }
-
-    public function accessCodes($id) : View 
-    {
-        $user = User::find($id);
-        $accessCodes = AccessCode::where('user_id', $id)->orderByDesc('created_at')->paginate(10);
-        return view('backend.access_codes', compact('user', 'accessCodes'));
+        return view('admin.orders', compact('user', 'orders'));
     }
 }

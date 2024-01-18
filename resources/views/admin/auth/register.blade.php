@@ -1,16 +1,16 @@
-@extends('layouts.admin')
+@extends('layouts.admin', ['title' => 'Register New Admin', 'activePage' => 'settings'])
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h6 class="m-0 font-weight-bold text-dark">{{ __('Register New Admin') }}</h6>
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="">
                         @csrf
 
                         <div class="form-group row">
@@ -47,8 +47,9 @@
                             <div class="col-md-6">
                                 <select name="role" id="role" class="form-control custom-select" required>
                                     <option value="">--- Select Role ---</option>
-                                    <option value="superuser">Superuser</option>
-                                    <option value="editor">Editor</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                    @endforeach
                                 </select>
 
                                 @error('role')
