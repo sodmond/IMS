@@ -88,7 +88,7 @@
 									<i class="fa fa-shopping-bag"></i><span class="badge bg-primary">3</span>
                                 </a>
 							</div>
-                            <button type="button" class="btn btn-dark rounded-0 ml-4">Login</button>
+                            {{--<button type="button" class="btn btn-dark rounded-0 ml-4">Login</button>--}}
 						</div>
                     </div>
                     <!-- Quik search -->
