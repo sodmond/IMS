@@ -24,18 +24,24 @@
         <!-- Product -->
         <div class="container">
             <div class="row">
-                @if (1!=1)
+                @if(session('success'))
+                    <div class="alert alert-success" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                    </div>
+                @endif
+                @if ($cart->count() < 1)
                 <div class="col-lg-12 text-center">
                     <h2>Your cart is currently empty.</h2>
-                    <a href="" class="site-button">Return To Shop</a>
+                    <a href="{{ route('products') }}" class="site-button">Return To Shop</a>
                 </div>
                 @else
                 <div class="col-lg-8 m-b30">
-                    <div class="shop-cart-2 bg-white table-responsive">
-                        <div class="shop-cart-2-head clearfix">
-                            <h6 class="font-weight-700 pull-left m-a0">MY CART (5)</h6>
+                    <form class="shop-cart-2 bg-white table-responsive" id="cartForm" method="POST" action="">
+                        @csrf
+                        <div class="shop-cart-2-head clearfix pb-3">
+                            <h6 class="font-weight-700 pull-left m-a0">MY CART ({{$cart->count()}})</h6>
                             <div class="dropdown">
-                                <ul class="m-a0 list-inline">
+                                {{--<ul class="m-a0 list-inline">
                                     <li><i class="fa text-primary m-r10 fa-map-marker"></i></li>
                                     <li><input type="text" class="form-control" value="303030" placeholder="Enter Delivery Pincode"></li>
                                     <li>
@@ -47,147 +53,66 @@
                                             <a class="dropdown-item" href="#">303030</a>
                                         </div>
                                     </li>
-                                </ul>
+                                </ul>--}}
                             </div>
                         </div>
                         <table class="table shop-cart-2-list check-tbl">
                             <tbody>
-                                <tr>
-                                    <td class="product-item-img">
-                                        <img src="images/product/thumb/item6.jpg" alt=""> 
-                                        <div class="product-item-quantity m-t15">
-                                            <div class="quantity btn-quantity max-w80">
-                                                <input id="demo_vertical2" type="text" value="1" name="demo_vertical2"/>
+                                @php $total = 0; @endphp
+                                @if($cart->count() > 0)
+                                    @foreach($cart as $item)
+                                    @php 
+                                    $total += ($products[$item->product_id]->price * $item->quantity);
+                                    $slug = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $products[$item->product_id]->title))); 
+                                    @endphp
+                                    <input type="hidden" name="product_ids[]" value="{{ $item->product_id }}">
+                                    <tr>
+                                        <td class="product-item-img">
+                                            <img src="{{ asset('storage/'.$products[$item->product_id]->image) }}" alt=""> 
+                                            <div class="product-item-quantity m-t15">
+                                                <div class="quantity btn-quantity max-w80">
+                                                    QTY: <input type="text" class="demo_vertical2" value="{{ $item->quantity }}" name="quantities[]"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-item-details">
-                                        <h6 class="product-item-title">
-                                            <a href="#">Light Blue Denim Dress</a>
-                                        </h6>
-                                        <div class="font-weight-400"><small>Brown Strap Regular</small></div>
-                                        <div class="font-weight-400"><small>Seller: TimeWorld</small></div>
-                                        <div class="product-item-price font-20 m-tb10 text-secondry">$24,495<span class="text-primary font-14 m-l20">2 Offers Available</span></div>
-                                        <div class="product-item-save"><a href="#" class="text-black">SAVE FOR LATER</a></div>
-                                        <div class="product-item-close"><a href="#">REMOVE</a></div>
-                                    </td>
-                                    <td class="product-item-time">
-                                        <p class="m-b0 text-black">Free delivery in 7-9 days</p>
-                                        <p class="m-b0"><small>10 Days Replacement Policy</small></p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-item-img">
-                                        <img src="images/product/thumb/item1.jpg" alt="">
-                                        <div class="product-item-quantity m-t15">
-                                            <div class="quantity btn-quantity max-w80">
-                                                <input id="demo_vertical2" type="text" value="1" name="demo_vertical2"/>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-item-details">
-                                        <h6 class="product-item-title">
-                                            <a href="#">Light Blue Denim Dress</a>
-                                        </h6>
-                                        <div class="font-weight-400"><small>Brown Strap Regular</small></div>
-                                        <div class="font-weight-400"><small>Seller: TimeWorld</small></div>
-                                        <div class="product-item-price font-20 m-tb10 text-secondry">$24,495<span class="text-primary font-14 m-l20">2 Offers Available</span></div>
-                                        <div class="product-item-save"><a href="#" class="text-black">SAVE FOR LATER</a></div>
-                                        <div class="product-item-close"><a href="#">REMOVE</a></div>
-                                    </td>
-                                    <td class="product-item-time">
-                                        <p class="m-b0 text-black">Free delivery in 7-9 days</p>
-                                        <p class="m-b0"><small>10 Days Replacement Policy</small></p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-item-img">
-                                        <img src="images/product/thumb/item2.jpg" alt="">
-                                        <div class="product-item-quantity m-t15">
-                                            <div class="quantity btn-quantity max-w80">
-                                                <input id="demo_vertical2" type="text" value="1" name="demo_vertical2"/>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-item-details">
-                                        <h6 class="product-item-title">
-                                            <a href="#">Light Blue Denim Dress</a>
-                                        </h6>
-                                        <div class="font-weight-400"><small>Brown Strap Regular</small></div>
-                                        <div class="font-weight-400"><small>Seller: TimeWorld</small></div>
-                                        <div class="product-item-price font-20 m-tb10 text-secondry">$24,495<span class="text-primary font-14 m-l20">2 Offers Available</span></div>
-                                        <div class="product-item-save"><a href="#" class="text-black">SAVE FOR LATER</a></div>
-                                        <div class="product-item-close"><a href="#">REMOVE</a></div>
-                                    </td>
-                                    <td class="product-item-time">
-                                        <p class="m-b0 text-black">Free delivery in 7-9 days</p>
-                                        <p class="m-b0"><small>10 Days Replacement Policy</small></p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-item-img">
-                                        <img src="images/product/thumb/item3.jpg" alt="">
-                                        <div class="product-item-quantity m-t15">
-                                            <div class="quantity btn-quantity max-w80">
-                                                <input id="demo_vertical2" type="text" value="1" name="demo_vertical2"/>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-item-details">
-                                        <h6 class="product-item-title">
-                                            <a href="#">Light Blue Denim Dress</a>
-                                        </h6>
-                                        <div class="font-weight-400"><small>Brown Strap Regular</small></div>
-                                        <div class="font-weight-400"><small>Seller: TimeWorld</small></div>
-                                        <div class="product-item-price font-20 m-tb10 text-secondry">$24,495<span class="text-primary font-14 m-l20">2 Offers Available</span></div>
-                                        <div class="product-item-save"><a href="#" class="text-black">SAVE FOR LATER</a></div>
-                                        <div class="product-item-close"><a href="#">REMOVE</a></div>
-                                    </td>
-                                    <td class="product-item-time">
-                                        <p class="m-b0 text-black">Free delivery in 7-9 days</p>
-                                        <p class="m-b0"><small>10 Days Replacement Policy</small></p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-item-img">
-                                        <img src="images/product/thumb/item4.jpg" alt="">
-                                        <div class="product-item-quantity m-t15">
-                                            <div class="quantity btn-quantity max-w80">
-                                                <input id="demo_vertical2" type="text" value="1" name="demo_vertical2"/>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-item-details">
-                                        <h6 class="product-item-title">
-                                            <a href="#">Light Blue Denim Dress</a>
-                                        </h6>
-                                        <div class="font-weight-400"><small>Brown Strap Regular</small></div>
-                                        <div class="font-weight-400"><small>Seller: TimeWorld</small></div>
-                                        <div class="product-item-price font-20 m-tb10 text-secondry">$24,495<span class="text-primary font-14 m-l20">2 Offers Available</span></div>
-                                        <div class="product-item-save"><a href="#" class="text-black">SAVE FOR LATER</a></div>
-                                        <div class="product-item-close"><a href="#">REMOVE</a></div>
-                                    </td>
-                                    <td class="product-item-time">
-                                        <p class="m-b0 text-black">Free delivery in 7-9 days</p>
-                                        <p class="m-b0"><small>10 Days Replacement Policy</small></p>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td class="product-item-details">
+                                            <h6 class="product-item-title">
+                                                <a href="{{ route('product', ['id'=>$item->product_id, 'slug'=>$slug]) }}">{{ ucwords($products[$item->product_id]->title) }}</a>
+                                            </h6>
+                                            <div class="font-weight-400"><small><b>Category:</b> {{ \App\Models\Product::getProductCatName($products[$item->product_id]->category_id) }}</small></div>
+                                            <div class="product-item-price font-20 m-tb10 text-secondry">₦{{ number_format($products[$item->product_id]->price, 2) }}</div>
+                                            <div class="product-item-close"><a href="#" onclick="event.preventDefault(); window.location.href='{{route('cart.remove', ['id' => $item->product_id])}}'">REMOVE</a></div>
+                                        </td>
+                                        <td class="product-item-time">
+                                            <p class="m-b0 text-black">Prices are subject to change</p>
+                                            <p class="m-b0"><small>Exact price will be included when you receive the invoice</small></p>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="m-b0 text-center py-4">Cart is Empty</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
-                    </div>
+                    </form>
                 </div>
                 <!-- Shop Cart 2 Details -->
                 <div class="col-lg-4 m-b30">
                     <div class="shop-cart-2-details sticky-top bg-white">
-                        <div class="details-head">PRICE DETAILS</div>
+                        {{--<div class="details-head">PRICE DETAILS</div>
                         <div class="details-list text-secondry p-tb15 p-lr30">
                             <ul class="m-a0">
-                                <li>Price (5 items)<span class="pull-right">$42,830</span></li>
-                                <li>Delivery Charges<span class="pull-right text-primary">FREE</span></li>
-                                <li class="font-weight-600">Amount Payable<span class="pull-right">$42,830</span></li>
+                                <li>Price ({{$cart->count()}} items)<span class="pull-right">₦{{ number_format($total, 0) }}</span></li>
+                                <li>Delivery Charges<span class="pull-right text-primary">TBD</span></li>
+                                <li class="font-weight-600">Amount Payable<span class="pull-right">₦{{ number_format($total, 0) }}</span></li>
                             </ul>
+                        </div>--}}
+                        <div class="details-info text-primary">
+                            <button class="site-button button-lg btn-block" type="button" onclick="event.preventDefault(); document.forms.cartForm.submit();">
+                                Continue to Checkout </button>
                         </div>
-                        <div class="details-info text-primary">Your Total Savings on this order $274</div>
                     </div>
                 </div>
                 <!-- Shop Cart 2 Details END -->

@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\Admin as Admin;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,12 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/product/{id}/{slug}', [ProductController::class, 'get'])->name('product');
-Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
+Route::post('/cart/item/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::post('/cart', [CartController::class, 'update'])->name('cart.update');
+Route::get('/cart/item/{id}/remove', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/checkout', [CartController::class, 'submitQuote'])->name('checkout.submit');
 
 Route::group(['prefix' => 'user', 'as' => 'user.'], function ()
 {

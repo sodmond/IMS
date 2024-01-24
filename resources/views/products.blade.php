@@ -32,7 +32,14 @@
                             <img src="{{ asset('storage/'.$product->image) }}" alt=""/>
                             <div class="item-info-in">
                                 <ul>
-                                    <li><a href="#" title="Add to Cart"><i class="ti-shopping-cart"></i></a></li>
+                                    <li>
+                                        <form action="{{ route('cart.add') }}" method="POST" id="{{ 'productForm'.$product->id }}">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <a href="#" title="Add to Cart" onclick="event.preventDefault(); document.forms.{{'productForm'.$product->id}}.submit();"><i class="ti-shopping-cart"></i></a>
+                                        </form>
+                                    </li>
                                     <li><a href="{{ route('product', ['id'=>$product->id, 'slug'=>$slug]) }}" title="View Product"><i class="ti-eye"></i></a></li>
                                     {{--<li><a href="#"><i class="ti-heart"></i></a></li>--}}
                                 </ul>

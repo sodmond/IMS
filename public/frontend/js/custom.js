@@ -954,7 +954,7 @@ var Winkit = function(){
 	
 	/* handle Bootstrap Touch Spin ============ */
 	var handleBootstrapTouchSpin = function(){
-		jQuery("input[name='demo_vertical2']").TouchSpin({
+		jQuery(".demo_vertical2").TouchSpin({
 		  verticalbuttons: true,
 		  verticalupclass: 'ti-plus',
 		  verticaldownclass: 'ti-minus'

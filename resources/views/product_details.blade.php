@@ -31,7 +31,9 @@
                         </div>
                     </div>
                     <div class="col-md-7 col-lg-7 col-sm-8">
-                        <form method="post" class="cart sticky-top">
+                        <form method="post" class="cart sticky-top" action="{{ route('cart.add') }}">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <div class="relative">
                                 <h3 class="m-tb10">₦{{ number_format($product->price, 2) }} </h3>
                                 <div class="shop-item-rating">
@@ -54,11 +56,11 @@
                                 <div class="m-b30 col-md-5 col-sm-4">
                                     <h6>Select quantity</h6>
                                     <div class="quantity btn-quantity style-1">
-                                        <input id="demo_vertical2" type="text" value="1" name="demo_vertical2"/>
+                                        <input class="demo_vertical2" type="text" value="1" name="quantity" required>
                                     </div>
                                 </div>
                             </div>
-                            <button class="site-button radius-no"><i class="ti-shopping-cart"></i> Add To Cart</button>
+                            <button type="submit" class="site-button radius-no"><i class="ti-shopping-cart"></i> Add To Cart</button>
                         </form>
                     </div>
             </div>

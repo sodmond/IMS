@@ -22,8 +22,5 @@ class ProductController extends Controller
         return view('product_details', compact('product', 'category', 'related_products'));
     }
 
-    public function cart()
-    {
-        return view('cart');
-    }
+    
 }

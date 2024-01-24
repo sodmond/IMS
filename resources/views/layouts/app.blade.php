@@ -1,3 +1,7 @@
+<?php 
+$cookieId = 'cybernaultng_'.session()->getId();
+$cart = \App\Models\Cart::where('cookie_id', $cookieId)->get();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,7 +89,7 @@
                             <button id="quik-search-btn" type="button" class="site-button-link"><i class="fa fa-search"></i></button>
                             <div class="shop-cart navbar-right">
 								<a class="site-button-link cart-btn" href="{{ route('cart') }}" style="color:#000;">
-									<i class="fa fa-shopping-bag"></i><span class="badge bg-primary">3</span>
+									<i class="fa fa-shopping-bag"></i><span class="badge bg-primary">{{ $cart->count() }}</span>
                                 </a>
 							</div>
                             {{--<button type="button" class="btn btn-dark rounded-0 ml-4">Login</button>--}}
@@ -203,6 +207,17 @@
     </footer>
     <!-- Footer END-->
     <button class="scroltop fa fa-chevron-up" ></button>
+      
+    <div class="modal" tabindex="-1" id="statusModal" style="z-index:9999;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <p class="h5">Product Added to Cart</p>
+                    <img src="{{ asset('images/verified.gif') }}" alt="" style="width:120px;">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- JAVASCRIPT FILES ========================================= -->
 <script src="{{ asset('frontend/js/jquery.min.js') }}"></script><!-- JQUERY.MIN JS -->
@@ -310,8 +325,16 @@ var revapi265,
         }
       });
 </script>
-
-
+@if(session('cart_suc'))
+<script>
+    $(function() {
+        $('#statusModal').modal('show');
+        setTimeout(function() {
+            $("#statusModal").modal('hide');
+        }, 2000);
+    });
+</script>
+@endif
  
 
 </body>
