@@ -70,6 +70,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
 
         Route::get('orders', [Admin\OrderController::class, 'index'])->name('orders');
         Route::get('order/{id}', [Admin\OrderController::class, 'get'])->name('order');
+        Route::post('order/{id}/add-product', [Admin\OrderController::class, 'addProduct'])->name('order.add_product');
+        Route::post('order/{id}/edit-product', [Admin\OrderController::class, 'editProduct'])->name('order.edit_product');
+        Route::post('order/{id}/remove-product', [Admin\OrderController::class, 'removeProduct'])->name('order.remove_product');
+        Route::get('order/{id}/generate-invoice', [Admin\OrderController::class, 'genInv'])->name('order.invoicegen');
+        Route::get('order/{id}/delete', [Admin\OrderController::class, 'delete'])->name('order.delete');
 
         Route::get('invoices', [Admin\InvoiceController::class, 'index'])->name('invoices');
         Route::get('invoice/{id}', [Admin\InvoiceController::class, 'get'])->name('invoice');

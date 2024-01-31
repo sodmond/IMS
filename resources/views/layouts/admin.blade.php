@@ -19,7 +19,8 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
     <!-- Custom styles for this template-->
     <link href="{{asset('/backend/css/sb-admin-2.min.css')}}" rel="stylesheet">
     <link href="{{asset('/backend/css/custom.css')}}" rel="stylesheet">
@@ -266,7 +267,8 @@
     <script src="{{asset('/backend/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{asset('/backend/js/demo/chart-pie-demo.js')}}"></script>
     <script src="{{asset('/backend/js/custom.js')}}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    @stack('custom-scripts')
 </body>
 @endauth
 
