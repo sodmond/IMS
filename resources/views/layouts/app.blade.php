@@ -75,7 +75,7 @@ $cart = \App\Models\Cart::where('cookie_id', $cookieId)->get();
                 <div class="container clearfix">
                     <!-- website logo -->
                     <div class="logo-header mostion">
-						<a href="index.html"><img src="{{ asset('images/logo.png') }}" alt=""></a>
+						<a href="{{ url('/') }}}"><img src="{{ asset('images/logo.png') }}" alt=""></a>
 					</div>
                     <!-- nav toggle button -->
                     <button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
