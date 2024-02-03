@@ -99,7 +99,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
 	});
 });
 
-Route::get('/generate-invoice', function() {
+/*Route::get('/generate-invoice', function() {
     $order = Order::find('IMS1706108440');
     $orderAddr = DB::table('order_address')->where('order_id', $order->id)->first();
     $invoice = Invoice::where('order_id', $order->id)->first();
@@ -112,4 +112,4 @@ Route::get('/generate-invoice', function() {
 Route::get('/mailable', function() {
     $invoice = Invoice::all();
     return new \App\Mail\SendInvoice($invoice[0]->id);
-});
+});*/
