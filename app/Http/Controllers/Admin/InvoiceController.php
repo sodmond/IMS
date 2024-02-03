@@ -69,8 +69,10 @@ class InvoiceController extends Controller
         });
         if($payment->save() && $invoice->save() && $order->save()) {
             DB::commit();
-            $admin = Admin::find(1);
-            $admin->notify(new StockAlert($lowStockCount));
+            if($lowStockCount > 0) {
+                $admin = Admin::find(1);
+                $admin->notify(new StockAlert($lowStockCount));
+            }
             return back()->with('success', 'Payment has been added to Invoice');
         }
         DB::rollBack();
