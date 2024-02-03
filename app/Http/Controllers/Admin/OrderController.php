@@ -148,7 +148,7 @@ class OrderController extends Controller
             $pdfFileName = $invoice->id . '.pdf';
             $pdf->save(storage_path()."/app/public/invoices/$pdfFileName");
             Mail::to($customer->email)->send(new SendInvoice($invoice->id));
-            return back()->with('success', 'Invoice has been updated and sent to client');
+            return back()->with('success', 'Invoice has been updated and sent to customer');
         }
         $invoice = new Invoice;
         $invoice->id = Invoice::genId();
@@ -165,7 +165,7 @@ class OrderController extends Controller
         $pdfFileName = $invoice->id . '.pdf';
         $pdf->save(storage_path()."/app/public/invoices/$pdfFileName");
         Mail::to($customer->email)->send(new SendInvoice($invoice->id));
-        return back()->with('success', 'Invoice has been generated and sent to client');
+        return back()->with('success', 'Invoice has been generated and sent to customer');
     }
 
     public function delete($orderId)
