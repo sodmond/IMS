@@ -13,4 +13,10 @@ class PaymentController extends Controller
         $payments = Payment::orderByDesc('created_at')->paginate(10);
         return view('admin.payments', compact('payments'));
     }
+
+    public function get($id)
+    {
+        $payment = Payment::find($id);
+        return view('admin.payment', compact('payment'));
+    }
 }

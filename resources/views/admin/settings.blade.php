@@ -44,11 +44,11 @@
                     @csrf
                     <fieldset class="row">
                         <div class="col-md-4 mb-4">
-                            <label for="title">Title</label>
+                            <label for="title">Title <sup style="color:#F00;">*</sup></label>
                             <input type="text" class="form-control" name="title" id="title" required>
                         </div>
                         <div class="col-md-5">
-                            <label for="description">Description <small>(Optional)</small></label>
+                            <label for="description">Description</label>
                             <textarea class="form-control" name="description" id="description"></textarea>
                         </div>
                         <div class="col-md-3">

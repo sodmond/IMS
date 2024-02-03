@@ -49,21 +49,21 @@
                         @csrf
                         @method('put')
                         <div class="form-group row">
-                            <label for="firstname" class="col-md-3 col-form-label text-md-right">Firstname</label>
+                            <label for="firstname" class="col-md-3 col-form-label text-md-right">Firstname <sup style="color:#F00;">*</sup></label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="firstname" id="firstname" value="{{ Auth::guard('admin')->user()->firstname }}" required>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="lastname" class="col-md-3 col-form-label text-md-right">Lastname</label>
+                            <label for="lastname" class="col-md-3 col-form-label text-md-right">Lastname <sup style="color:#F00;">*</sup></label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="lastname" id="lastname" value="{{ Auth::guard('admin')->user()->lastname }}" required>
                             </div>
                         </div>
                         
                         <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Email</label>
+                            <label for="email" class="col-md-3 col-form-label text-md-right">Email <sup style="color:#F00;">*</sup></label>
                             <div class="col-md-9">
                                 <input type="email" class="form-control" name="email" id="email" value="{{ Auth::user()->email }}" required>
                             </div>
@@ -96,21 +96,21 @@
                         @csrf
                         @method('put')
                         <div class="form-group row">
-                            <label for="input-current-password" class="col-md-3 col-form-label text-md-right">Current Password</label>
+                            <label for="input-current-password" class="col-md-3 col-form-label text-md-right">Current Password <sup style="color:#F00;">*</sup></label>
                             <div class="col-md-9">
                                 <input type="password" class="form-control" name="old_password" id="input-current-password" required>
                             </div>
                         </div>
                         
                         <div class="form-group row">
-                            <label for="input-password" class="col-md-3 col-form-label text-md-right">New Password</label>
+                            <label for="input-password" class="col-md-3 col-form-label text-md-right">New Password <sup style="color:#F00;">*</sup></label>
                             <div class="col-md-9">
                                 <input type="password" class="form-control" name="password" id="input-password" required>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="input-password-confirmation" class="col-md-3 col-form-label text-md-right">Confirm Password</label>
+                            <label for="input-password-confirmation" class="col-md-3 col-form-label text-md-right">Confirm Password <sup style="color:#F00;">*</sup></label>
                             <div class="col-md-9">
                                 <input type="password" class="form-control" name="password_confirmation" id="input-password-confirmation" required>
                             </div>

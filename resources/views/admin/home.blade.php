@@ -6,13 +6,14 @@
 </div>
 
 <div class="row">
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Total Customers</div>
+                            <a href="{{ route('admin.users', ['filter' => 'all']) }}">Total Customers</a>
+                        </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($users->count()) }}</div>
                     </div>
                     <div class="col-auto">
@@ -23,12 +24,14 @@
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
         <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Products</div>
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                            <a class="text-info" href="{{ route('admin.products', ['filter' => 'all']) }}">Total Products</a>
+                        </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($products->count()) }}</div>
                     </div>
                     <div class="col-auto">
@@ -39,15 +42,35 @@
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                            <a class="text-danger" href="{{ route('admin.products', ['filter' => 'low_stock']) }}">Out of Stock Products</a>
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($productsOutOfStock->count()) }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
         <div class="card border-left-dark shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">All Orders</div>
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                            <a class="text-dark" href="{{ route('admin.orders') }}">All Orders</a>
+                        </div>
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{-- $directRef --}}</div>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $orders->count() }}</div>
                             </div>
                         </div>
                     </div>
@@ -59,13 +82,13 @@
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
         <div class="card border-left-success shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Completed Orders</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{-- number_format($totalAdmin) --}}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $ordersCompleted->count() }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-users-cog fa-2x text-gray-300"></i>
@@ -76,6 +99,7 @@
     </div>
 </div>
 
+<!--
 <div class="row">
     <div class="col-lg-7 mb-4">
         <div class="card shadow mb-4">
@@ -129,12 +153,12 @@
         </div>
     </div>
 </div>
-
+-->
 <div class="row">
     <div class="col-lg-12 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-dark">Recent Registered Referrals</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Recent Orders</h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -143,24 +167,30 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Referral ID</th>
-                                        <th>Full Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Date</th>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Status</th>
+                                        <th>Note</th>
+                                        <th>Date Created</th>
+                                        <th>...</th>
                                     </tr>
                                 </thead>
-                                {{--<tbody>
-                                    @foreach($recentRef as $ref)
-                                    <tr>
-                                        <td>{{ $ref->ref_code }}</td>
-                                        <td>{{ $ref->fullname }}</td>
-                                        <td>{{ $ref->email }}</td>
-                                        <td>{{ str_pad($ref->phone, 11, '0', STR_PAD_LEFT) }}</td>
-                                        <td>{{ $ref->created_at }}</td>
-                                    </tr>
+                                <tbody>
+                                    @foreach ($recentOrders as $order)
+                                        <tr>
+                                            <td>{{ $order->id }}</td>
+                                            <td>{{ \App\Models\User::getUserFullName($order->user_id) }}</td>
+                                            <td>{{ $order->status }}</td>
+                                            <td>{{ $order->comment }}</td>
+                                            <td>{{ $order->created_at }}</td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href='{{ route('admin.order', ['id' => $order->id]) }}'>
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
                                     @endforeach
-                                </tbody>--}}
+                                </tbody>
                             </table>
                         </div>
                     </div>

@@ -27,7 +27,11 @@ class HomeController extends Controller
     {
         $users = User::all();
         $products = Product::all();
-        return view('admin.home', compact('users', 'products'));
+        $productsOutOfStock = Product::where('quantity', '<=', 10)->get();
+        $orders = Order::all();
+        $ordersCompleted = Order::where('status', 'completed')->get();
+        $recentOrders = Order::orderByDesc('created_at')->take(10)->get();
+        return view('admin.home', compact('users', 'products', 'productsOutOfStock', 'orders', 'ordersCompleted', 'recentOrders'));
     }
 
     public function newsletter()

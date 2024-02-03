@@ -5,12 +5,17 @@
     <div class="col-md-4">
         <h1 class="h3 mb-0 text-gray-800">Single Order</h1>
     </div>
-    <div class="col-md-4">&nbsp;</div>
-    <div class="col-md-4 text-right">
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addProductModal">
+    <div class="col-md-2">&nbsp;</div>
+    <div class="col-md-6 text-right">
+        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addProductModal">
             <i class="fa fa-plus"></i> Add Product
         </button>
-        <button type="button" class="btn btn-danger" id="deleteOrderBtn">
+        @if($invoice)
+        <a class="btn btn-primary btn-sm" href="{{ route('admin.invoice', ['id' => $invoice->id]) }}">
+            <i class="fa fa-eye"></i> View Invoice
+        </a>
+        @endif
+        <button type="button" class="btn btn-danger btn-sm" id="deleteOrderBtn">
             <i class="fa fa-trash"></i> Delete Order
         </button>
         <input type="hidden" id="deleteOrderUrl" value="{{ route('admin.order.delete', ['id' => $order->id]) }}">
@@ -42,8 +47,8 @@
                 <div class="row">
                     <h6 class="m-0 font-weight-bold text-dark col-md-6">Order Details</h6>
                     <div class="col-md-6 text-md-right">
-                        <a class="btn btn-info btn-sm" href='{{ route("admin.order.invoicegen", ['id' => $order->id]) }}'>
-                            <i class="fa fa-sync"></i> Generate Invoice
+                        <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#genInvoiceModal">
+                            <i class="fa fa-sync"></i> {{ ($invoice) ? 'Regenerate Invoice' : 'Generate Invoice' }}
                         </a>
                     </div>
                 </div>
@@ -167,7 +172,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-info" href="{{ route('logout') }}" onclick="event.preventDefault(); 
+                <a class="btn btn-info" href="#" onclick="event.preventDefault(); 
                             document.getElementById('addProductForm').submit();">Submit</a>
             </div>
         </div>
@@ -199,7 +204,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-info" href="{{ route('logout') }}" onclick="event.preventDefault(); 
+                <a class="btn btn-info" href="#" onclick="event.preventDefault(); 
                             document.getElementById('editProductQtyForm').submit();">Submit</a>
             </div>
         </div>
@@ -226,8 +231,62 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); 
+                <a class="btn btn-danger" href="#" onclick="event.preventDefault(); 
                             document.getElementById('productRemoveForm').submit();">Remove</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Generate Invoice Modal-->
+<div class="modal fade" id="genInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Generate Invoice</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route("admin.order.invoicegen", ['id' => $order->id]) }}" method="post" id="genInvoiceForm">
+                    @csrf
+                    <div class="row my-2">
+                        <label class="col-md-3 text-right">Shipping Fee (₦) <sup style="color:#F00;">*</sup></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="shipping_fee" id="shipping_fee" required value="{{ $invoice->shipping_fee ?? 0 }}">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <label class="col-md-3 text-right">Tax (%) <sup style="color:#F00;">*</sup></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="tax" id="tax" required value="{{ $invoice->tax ?? 0 }}">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <label class="col-md-3 text-right">Discount (%) <sup style="color:#F00;">*</sup></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="discount" id="discount" required value="{{ $invoice->discount ?? 0 }}">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <label class="col-md-3 text-right">Lead Time</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="lead_time" id="lead_time" value="{{ $invoice->lead_time ?? '' }}">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <label class="col-md-3 text-right">Note</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" name="note" id="note">{{ $invoice->note ?? '' }}</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-info" href="#" onclick="event.preventDefault(); 
+                            document.getElementById('genInvoiceForm').submit();">Submit</a>
             </div>
         </div>
     </div>

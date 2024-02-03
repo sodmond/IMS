@@ -17,6 +17,11 @@ class ProductController extends Controller
             $products = Product::orderByDesc('created_at')->paginate(10);
             return view('admin.products', compact('products', 'filter'));
         }
+        if ($filter == 'low_stock') {
+            $products = Product::where('quantity', '<=', 10)->orderByDesc('created_at')->paginate(10);
+            $filter = str_replace('_', ' ', $filter);
+            return view('admin.products', compact('products', 'filter'));
+        }
         $products = Product::where('title', 'LIKE', "%$filter%")->orderByDesc('created_at')->paginate(10);
         return view('admin.products', compact('products', 'filter'));
     }

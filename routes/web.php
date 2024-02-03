@@ -15,6 +15,10 @@ use App\Http\Controllers\Admin as Admin;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
+use App\Models\Invoice;
+use App\Models\Order;
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => true, 'verify' => false, 'reset' => true]);
@@ -73,11 +77,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
         Route::post('order/{id}/add-product', [Admin\OrderController::class, 'addProduct'])->name('order.add_product');
         Route::post('order/{id}/edit-product', [Admin\OrderController::class, 'editProduct'])->name('order.edit_product');
         Route::post('order/{id}/remove-product', [Admin\OrderController::class, 'removeProduct'])->name('order.remove_product');
-        Route::get('order/{id}/generate-invoice', [Admin\OrderController::class, 'genInv'])->name('order.invoicegen');
+        Route::post('order/{id}/generate-invoice', [Admin\OrderController::class, 'genInv'])->name('order.invoicegen');
         Route::get('order/{id}/delete', [Admin\OrderController::class, 'delete'])->name('order.delete');
 
         Route::get('invoices', [Admin\InvoiceController::class, 'index'])->name('invoices');
         Route::get('invoice/{id}', [Admin\InvoiceController::class, 'get'])->name('invoice');
+        Route::post('invoice/{id}/add-payment', [Admin\InvoiceController::class, 'addPayment'])->name('invoice.pay');
 
         Route::get('payments', [Admin\PaymentController::class, 'index'])->name('payments');
         Route::get('payment/{id}', [Admin\PaymentController::class, 'get'])->name('payment');
@@ -92,4 +97,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
         Route::put('settings/profile/edit', [Admin\SettingsController::class, 'update'])->name('profile.edit');
         Route::put('settings/profile/password', [Admin\SettingsController::class, 'password'])->name('profile.password');
 	});
+});
+
+Route::get('/generate-invoice', function() {
+    $order = Order::find('IMS1706108440');
+    $orderAddr = DB::table('order_address')->where('order_id', $order->id)->first();
+    $invoice = Invoice::where('order_id', $order->id)->first();
+    $product_ids = json_decode($order->products, true);
+    $quantities = json_decode($order->quantity, true);
+    $products = Product::whereIn('id', $product_ids)->get();
+    return view('admin.invoice_temp', compact('order', 'orderAddr', 'invoice', 'products', 'product_ids', 'quantities'));
+});
+
+Route::get('/mailable', function() {
+    $invoice = Invoice::all();
+    return new \App\Mail\SendInvoice($invoice[0]->id);
 });

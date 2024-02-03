@@ -41,7 +41,7 @@
                             @csrf
 
                             <div class="form-group row">
-                                <label for="category_id" class="col-md-3 col-form-label text-md-right">Category</label>
+                                <label for="category_id" class="col-md-3 col-form-label text-md-right">Category <sup style="color:#F00;">*</sup></label>
                                 <div class="col-md-8">
                                     <select class="form-control" name="category_id" id="category_id" required>
                                         <option value="">- - - Select Category - - -</option>
@@ -53,42 +53,42 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="title" class="col-md-3 col-form-label text-md-right">Title</label>
+                                <label for="title" class="col-md-3 col-form-label text-md-right">Title <sup style="color:#F00;">*</sup></label>
                                 <div class="col-md-8">
                                     <input id="title" type="text" class="form-control" name="title" value="{{ $product->title ?? old('title') }}" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="part_number" class="col-md-3 col-form-label text-md-right">Part Number</label>
+                                <label for="part_number" class="col-md-3 col-form-label text-md-right">Part Number <sup style="color:#F00;">*</sup></label>
                                 <div class="col-md-8">
                                     <input id="part_number" type="text" class="form-control" name="part_number" value="{{ $product->part_number ?? old('part_number') }}" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="description" class="col-md-3 col-form-label text-md-right">Description</label>
+                                <label for="description" class="col-md-3 col-form-label text-md-right">Description <sup style="color:#F00;">*</sup></label>
                                 <div class="col-md-8">
                                     <textarea name="description" id="description" cols="30" rows="10" class="form-control" required>{{ $product->description ?? old('description') }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="price" class="col-md-3 col-form-label text-md-right">Price</label>
+                                <label for="price" class="col-md-3 col-form-label text-md-right">Price <sup style="color:#F00;">*</sup></label>
                                 <div class="col-md-8">
                                     <input id="price" type="number" class="form-control" name="price" value="{{ $product->price ?? old('price') }}" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="quantity" class="col-md-3 col-form-label text-md-right">Quantity</label>
+                                <label for="quantity" class="col-md-3 col-form-label text-md-right">Quantity <sup style="color:#F00;">*</sup></label>
                                 <div class="col-md-8">
                                     <input id="quantity" type="number" class="form-control" name="quantity" value="{{ $product->quantity ?? old('quantity') }}" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="image" class="col-md-3 col-form-label text-md-right">Cover Image <small>(Optional)</small></label>
+                                <label for="image" class="col-md-3 col-form-label text-md-right">Cover Image</label>
                                 <div class="col-md-8">
                                     <input id="image" type="file" class="form-control" name="image">
                                     <a href="{{ asset('storage/'.$product->image) }}" target="_blank">
