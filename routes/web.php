@@ -59,8 +59,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function ()
 
 	Route::group(['middleware' => ['auth:admin', 'check.admin']], function (){
         Route::get('dashboard', [Admin\HomeController::class, 'index'])->name('home');
+        Route::get('dashboard/reports/{type}', [Admin\HomeController::class, 'reports'])->name('reports');
+        Route::get('dashboard/reports_filter', [Admin\HomeController::class, 'reportsFilter'])->name('reports.filter');
 
         Route::get('customers/{filter}', [Admin\UsersController::class, 'index'])->name('users');
+        Route::get('customers_search', [Admin\UsersController::class, 'search'])->name('users.search');
         Route::get('customer/{id}', [Admin\UsersController::class, 'get'])->name('user');
 
         Route::get('products/{filter}', [Admin\ProductController::class, 'index'])->name('products');

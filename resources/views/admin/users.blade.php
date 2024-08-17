@@ -26,7 +26,13 @@
     <div class="col-lg-12 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-dark">List of All Customers</h6>
+                <h6 class="m-0 font-weight-bold text-dark">
+                    @if($filter == 'all')
+                        List of All Customers
+                    @else
+                        Search result for <em>"{{$filter}}"</em>
+                    @endif
+                </h6>
             </div>
             <div class="card-body">
                 <div class="row">
